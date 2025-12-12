@@ -1,0 +1,111 @@
+/* Palette: https://www.happyhues.co/palettes/3 */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: #fffffe;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+div#wrapper {
+    background-color: #d8eefe;
+    border: 4px #094067 solid;
+    width: 66vw;
+    margin: 20px;
+    min-height: calc(100vh - 40px);
+    border-radius: 10px;
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 20px;
+}
+
+header {
+    color: #094067;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+h2 {
+  width: 100%;
+  height: 2rem;
+  text-align: center;
+}
+
+div#buttons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+button {
+    border: 2px solid #094067;
+    border-radius: 5px;
+    padding: 4px;
+    color: #094067;
+    font-size: 1rem;
+    width: 5rem;
+}
+
+div#buttons button {
+    background-color: #d8eefe;
+}
+
+div#buttons button:hover {
+    background-color: #fffffe;
+}
+
+div#buttons button:active {
+    background-color: #d8eefe;
+
+}
+
+div#buttons button:disabled {
+  background-color: #90b4ce;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  justify-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+div.box {
+  color: #094067;
+  border: 2px solid #094067;
+  aspect-ratio: 1/1;
+  height: 8rem;
+  font-weight: bolder;
+  font-size: 4rem;
+  
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+div.box.enabled:hover {
+  background-color: #fffffe;
+}
+
+div.box.enabled:active {
+  background-color: #d8eefe;
+}
