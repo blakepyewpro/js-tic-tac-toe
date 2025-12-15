@@ -53,7 +53,57 @@ const gameboard = (function() {
 })();
 
 const gameController = (function() {
-  //TODO
+  let playerTurn = true;
+  let playerSymbol = "X";
+  let cpuSymbol = "O";
+  let gameActive = false;
+
+  const pickFirstPlayer = function() {
+    const randInt = Math.floor(Math.random() * 2)
+    if (randInt = 1) {
+      playerTurn = false;
+      playerSymbol = "O";
+      cpuSymbol = "X";
+    } else {
+      playerTurn = true;
+      playerSymbol = "X";
+      cpuSymbol = "O";
+    }
+  }
+  const randomMove = function () {
+    if (playerTurn) throw Error("Attempted randomMove on player turn");
+
+    let filledSpaces = 0;
+    const currentBoard = gameboard.get();
+
+    for (let x = 0; x <= 2; x++) {
+      for (let y = 0; y <= 2; y++) {
+        if (currentBoard[x][y] !== " ") filledSpaces++;
+      }
+    }
+
+    const selectedSpace = Math.floor(Math.random * (9 - filledSpaces) + 1)
+    const passedSpaces = 0;
+
+    for (let x = 0; x <= 2; x++) {
+      for (let y = 0; y <= 2; y++) {
+        if (currentBoard[x][y] === " ") passedSpaces++;
+        if (passedSpaces === selectedSpace) {
+          gameboard.mark(x, y, cpuSymbol);
+          playerTurn = true;
+        } else throw Error("Failed to mark selected space");
+      }
+    }
+  }
+  const getPlayerSymbol = function() {
+    return playerSymbol;
+  }
+  const getCpuSymbol = function() {
+    return cpuSymbol;
+  }
+  const getPlayerTurn = function() {
+    return playerTurn;
+  }
 })();
 
 const boardInterface = (function() {
