@@ -1,3 +1,7 @@
+// Due to an early typo, the arrays that represent the board below
+// use X as the vertical axis rather than Y, such that the top left
+// corner is [0][0] and the bottom right corner is [2][2]
+
 const gameboard = (function() {
   const board = [
     [' ', ' ', ' '],
@@ -70,7 +74,8 @@ const gameController = (function() {
       cpuSymbol = "O";
     }
   }
-  const randomMove = function () {
+  const cpuMove = function () {
+    if (gameboard.checkFull()) throw Error("Attempted cpuMove with full board");
     if (playerTurn) throw Error("Attempted randomMove on player turn");
 
     let filledSpaces = 0;
@@ -91,10 +96,35 @@ const gameController = (function() {
         if (passedSpaces === selectedSpace) {
           gameboard.mark(x, y, cpuSymbol);
           playerTurn = true;
-        } else throw Error("Failed to mark selected space");
+          return;
+        } else if (passedSpaces > selectedSpace) throw Error("Failed to mark selected space");
       }
     }
   }
+
+  const startGame = function() {
+    if (gameActive) throw Error("attempted startGame while already active");
+    else {
+      pickFirstPlayer();
+      if (!playerTurn) cpuMove();
+    }
+  }
+
+  const endGame = function (result) {
+    //todo
+  }
+
+  const playTurn = function (x, y) {
+    if(!playerTurn) throw Error("attempted playTurn while it is CPU turn");
+    else {
+      gameboard.mark(x, y, playerSymbol);
+      currentStatus = gameboard.checkOver();
+      if (currentStatus == "continue") {
+
+      }
+    }
+  }
+
   const getPlayerSymbol = function() {
     return playerSymbol;
   }
@@ -104,8 +134,58 @@ const gameController = (function() {
   const getPlayerTurn = function() {
     return playerTurn;
   }
+
+  return {getPlayerSymbol, getCpuSymbol, getPlayerTurn, playTurn}
 })();
 
 const boardInterface = (function() {
-  //TODO
+  const startBtn = document.querySelector("#start");
+  const cancelBtn = document.querySelector("#cancel");
+  const infoHeader = document.querySelector("h2");
+
+  const boardSelectors = [
+    [null, null, null],
+    [null, null, null],
+    [null, null, null]
+  ];
+  for (let x = 0; x <= 2; x++) {
+    for (let y = 0; y <= 2; y++) {
+      boardSelectors[x][y] = document.querySelector(`[data-id="${x},${y}"]`);
+    }
+  }
+
+  for (let x = 0; x <= 2; x++) {
+    for (let y = 0; y <= 2; y++) {
+      console.log(boardSelectors[x][y]);
+    }
+  }
+
+  const markBox = function (x, y, mark) {
+      boardSelectors[x][y].textContent = mark;
+      if (mark != " ") {
+        boardSelectors[x][y].ClassList.remove("enabled");
+      } else {
+        boardSelectors[x][y].ClassList.add("enabled");
+      }
+    }
+
+  const updateBoard = function () {
+    currentBoard = gameboard.get();
+    for (x = 0; x <= 2; x++) {
+      for (y = 0; y <= 2; y++) {
+        markBox(x, y, currentBoard[x][y]);
+      }
+    }
+  }
+
+  const spaceClicked = function (x, y) {
+    const currentBoard = gameboard.get();
+    if (currentBoard[x][y] != " ") return;
+    else {
+      gameController.playTurn(x, y);
+    }
+  }
+
+  markBox(0, 0, "X");
+  markBox(1, 0, "Y");
 })();
